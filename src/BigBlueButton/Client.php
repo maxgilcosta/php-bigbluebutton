@@ -142,7 +142,30 @@ class Client
     private function xml2object($raw_response)
     {
         $xml = simplexml_load_string($raw_response);
-        return json_decode(json_encode($xml));
+        $json = json_encode($xml);
+        $array = json_decode($json);
+
+        // Fix data model.
+        if (
+            isset($array->attendees)
+        ) {
+            $array->attendees = (array) $array->attendees;
+            if ($array->attendees[0] === "\n") {
+                $array->attendees = [];
+            }
+        }
+
+        // Fix data model.
+        if (
+            isset($array->metadata)
+        ) {
+            $array->metadata = (array) $array->metadata;
+            if ($array->metadata[0] === "\n") {
+                $array->metadata = [];
+            }
+        }
+
+        return $array;
     }
 
     /**
