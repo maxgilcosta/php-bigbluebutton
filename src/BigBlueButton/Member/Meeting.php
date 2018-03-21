@@ -331,6 +331,11 @@ class Meeting
             'allowStartStopRecording' => true,
         ];
 
+        $this->attendees = [];
+        $this->metadata = [];
+        $this->recordings = [];
+        $this->slides = [];
+
         // Take naming inconsistencies into account.
         if (!empty($attributes['name'])) {
             $attributes['meetingName'] = $attributes['name'];
