@@ -161,6 +161,8 @@ class Server
      *
      * @return \sanduhrs\BigBlueButton\Member\Meeting|FALSE
      *   A meeting object or FALSE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function getMeeting($meetingID)
     {
@@ -285,6 +287,8 @@ class Server
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function publishRecording($recordID)
     {
@@ -429,13 +433,9 @@ class Server
      * config.xml. This enables 3rd party applications to provide user-specific
      * config.xml files.
      *
-     * @param string $xml
-     *
-     * @return bool
-     *
      * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
-    public function setDefaultConfigXML($xml)
+    public function setDefaultConfigXML()
     {
         throw new BigBlueButtonException('Not implemented,yet.');
     }

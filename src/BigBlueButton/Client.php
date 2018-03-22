@@ -159,9 +159,7 @@ class Client
         $array = json_decode($json);
 
         // Fix data model.
-        if (
-            isset($array->attendees)
-        ) {
+        if (isset($array->attendees)) {
             $array->attendees = (array) $array->attendees;
             if ($array->attendees[0] === "\n") {
                 $array->attendees = [];
@@ -169,9 +167,7 @@ class Client
         }
 
         // Fix data model.
-        if (
-            isset($array->metadata)
-        ) {
+        if (isset($array->metadata)) {
             $array->metadata = (array) $array->metadata;
             if ($array->metadata[0] === "\n") {
                 $array->metadata = [];
