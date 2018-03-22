@@ -20,7 +20,7 @@ class BigBlueButton
      * @var string
      *   A version string.
      */
-    const VERSION = '0.4.0';
+    const VERSION = '0.5.0';
 
     /**
      * The BigBlueButton API version.
