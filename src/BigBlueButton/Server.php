@@ -432,6 +432,7 @@ class Server
      * @param string $xml
      *
      * @return bool
+     *
      * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function setDefaultConfigXML($xml)

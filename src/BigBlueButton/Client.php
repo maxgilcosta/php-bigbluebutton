@@ -72,6 +72,8 @@ class Client
     /**
      * Set URI.
      *
+     * @param \GuzzleHttp\Psr7\Uri $uri
+     *
      * @return \GuzzleHttp\Psr7\Uri
      */
     public function setUri(Uri $uri)
@@ -92,6 +94,8 @@ class Client
     /**
      * Set Secret.
      *
+     * @param string $secret
+     *
      * @return string
      */
     public function setSecret($secret)
@@ -111,6 +115,8 @@ class Client
 
     /**
      * Set Endpoint.
+     *
+     * @param string $endpoint
      *
      * @return string
      */
@@ -208,8 +214,10 @@ class Client
     /**
      * Generate call URI.
      *
-     * @params array $options
+     * @param string $call
+     * @param array $options
      *   The query parameters.
+     * @param bool $checksum
      *
      * @return string
      *   A properly formatted call URI.

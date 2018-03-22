@@ -1295,6 +1295,9 @@ class Meeting
      * config.xml. This enables 3rd party applications to provide user-specific
      * config.xml files.
      *
+     * @param string $configXML
+     *   A valid config.xml file.
+     *
      * @return string
      *   The xml formatted server response string.
      */
