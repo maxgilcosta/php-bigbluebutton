@@ -35,6 +35,13 @@ class Client
     protected $endpoint;
 
     /**
+     * The HTTP client.
+     *
+     * @var \GuzzleHttp\Client
+     */
+    protected $client;
+
+    /**
      * Client constructor.
      *
      * @param string $uri
