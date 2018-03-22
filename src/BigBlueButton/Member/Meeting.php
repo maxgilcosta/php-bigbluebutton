@@ -810,7 +810,7 @@ class Meeting
      */
     public function hasBeenForciblyEnded()
     {
-        return getHasBeenForciblyEnded();
+        return $this->getHasBeenForciblyEnded();
     }
 
     /**
