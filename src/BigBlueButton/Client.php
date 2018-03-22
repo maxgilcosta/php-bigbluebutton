@@ -300,7 +300,7 @@ class Client
      * @param array $options
      *   The API call options.
      *
-     * @throws \Exception
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      *
      * @return object
      *   The response data as object.

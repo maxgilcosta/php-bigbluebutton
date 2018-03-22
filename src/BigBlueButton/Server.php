@@ -60,6 +60,8 @@ class Server
      *
      * @return string
      *   The version of the BigBlueButton server instance.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function getVersion()
     {
@@ -140,6 +142,8 @@ class Server
      *
      * @return \sanduhrs\BigBlueButton\Member\Meeting
      *   A meeting object.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function addMeeting($options)
     {
@@ -174,6 +178,8 @@ class Server
      *
      * @return array
      *   An array of \sanduhrs\BigBlueButton\Meetings.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function getMeetings()
     {
@@ -216,6 +222,8 @@ class Server
      *
      * @return \sanduhrs\BigBlueButton\Member\Recording|FALSE
      *   An recording object or FALSE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function getRecording($recordingID)
     {
@@ -233,6 +241,8 @@ class Server
      *
      * @return array
      *   An array of \sanduhrs\BigBlueButton\Member\Recording.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function getRecordings()
     {
@@ -291,6 +301,8 @@ class Server
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function publishRecordings($recordingIDs)
     {
@@ -312,6 +324,8 @@ class Server
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function unpublishRecording($recordID)
     {
@@ -328,6 +342,8 @@ class Server
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function unpublishRecordings($recordIDs)
     {
@@ -349,6 +365,8 @@ class Server
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function deleteRecording($recordID)
     {
@@ -365,6 +383,8 @@ class Server
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function deleteRecordings($recordIDs)
     {

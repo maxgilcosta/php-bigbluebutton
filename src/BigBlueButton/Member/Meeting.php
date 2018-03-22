@@ -969,6 +969,8 @@ class Meeting
      * @return \sanduhrs\BigBlueButton\Member\Meeting
      *   The meeting object.
      *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
+     *
      * @todo http://docs.bigbluebutton.org/dev/api.html#preupload-slides
      */
     public function create()
@@ -1054,6 +1056,8 @@ class Meeting
      *
      * @return boolean
      *   The running status of the meeting TRUE for running.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function isRunning()
     {
@@ -1068,6 +1072,8 @@ class Meeting
      *
      * @return boolean
      *   The running status of the meeting TRUE for running.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function getRunning()
     {
@@ -1086,6 +1092,8 @@ class Meeting
      *
      * @return boolean
      *   The boolean TRUE if the end request has been sent.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function end()
     {
@@ -1105,6 +1113,8 @@ class Meeting
      *
      * @return \sanduhrs\BigBlueButton\Member\Meeting
      *   The meeting object.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     private function getInfo()
     {
@@ -1148,6 +1158,8 @@ class Meeting
      *
      * @return \sanduhrs\BigBlueButton\Member\Recording|FALSE
      *   An recording object or FALSE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function getRecording($recordingID)
     {
@@ -1165,6 +1177,8 @@ class Meeting
      *
      * @return array
      *   An array of \sanduhrs\BigBlueButton\Recording.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function getRecordings()
     {
@@ -1200,6 +1214,8 @@ class Meeting
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function publishRecording($recordID)
     {
@@ -1216,6 +1232,8 @@ class Meeting
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function publishRecordings($recordIDs)
     {
@@ -1237,6 +1255,8 @@ class Meeting
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function deleteRecording($recordID)
     {
@@ -1253,6 +1273,8 @@ class Meeting
      *
      * @return boolean
      *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function deleteRecordings($recordIDs)
     {

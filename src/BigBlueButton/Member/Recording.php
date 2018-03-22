@@ -268,6 +268,8 @@ class Recording
      * Publish recording.
      *
      * @return mixed
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function publish()
     {
@@ -282,6 +284,8 @@ class Recording
      * Unpublish recording.
      *
      * @return mixed
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function unpublish()
     {
@@ -296,6 +300,8 @@ class Recording
      * Delete recording.
      *
      * @return mixed
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
     public function delete()
     {
