@@ -1128,10 +1128,7 @@ class Meeting
                 if ($key === 'attendees') {
                     foreach ($value as $attendee) {
                         $this->{$key}[$attendee->userID] = new Attendee(
-                            (string) $attendee->userID,
-                            (string) $attendee->fullName,
-                            (string) $attendee->role,
-                            isset($attendee->customData) ? (array) $attendee->customData : []
+                            (array) $attendee
                         );
                     }
                 } elseif ($key === 'recordings') {
@@ -1196,10 +1193,10 @@ class Meeting
         }
         foreach ($recordings as $recording) {
             $this->recordings[$recording->recordingID] = new Recording(
-                $recording->recordingID,
-                (array) $recording,
-                $this->client
+                (array) $recording
             );
+            $this->recordings[$recording->recordingID]
+              ->setClient($this->client);
         }
         return $this->recordings;
     }
