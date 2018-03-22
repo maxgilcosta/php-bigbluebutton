@@ -117,6 +117,34 @@ class Meeting
      */
     protected $allowStartStopRecording;
 
+    /**
+     * User shared webcams will only appear to moderators.
+     *
+     * @var bool
+     */
+    protected $webcamsOnlyForModerator;
+
+    /**
+     * URL to logo for the flash client.
+     *
+     * @var string
+     */
+    protected $logo;
+
+    /**
+     * Copyright statement for flash client.
+     *
+     * @var string
+     */
+    protected $copyright;
+
+    /**
+     * Mute on start.
+     *
+     * @var bool
+     */
+    protected $muteOnStart;
+
     // Read-only properties
 
     /**
@@ -308,6 +336,17 @@ class Meeting
      *     recording. This means the meeting can start recording automatically
      *     (autoStartRecording=true) with the user able to stop/start recording
      *     from the client.
+     *   - webcamsOnlyForModerator (boolean): Setting
+     *     'webcamsOnlyForModerator=true' will cause all webcams shared by
+     *     viewers during this meeting to only appear for moderators (added 1.1)
+     *   - logo (string): Setting
+     *     'logo=http://www.example.com/my-custom-logo.png' will replace the
+     *     default logo in the Flash client. (added 2.0)
+     *   - copyright (string): Setting 'copyright=My custom copyright' will
+     *     replace the default copyright on the footer of the Flash client.
+     *     (added 2.0)
+     *   - muteOnStart (boolean): Setting 'muteOnStart=true' will mute all users
+     *     when the meeting starts. (added 2.0)
      *
      * @param \sanduhrs\BigBlueButton\Client $client
      */
@@ -329,6 +368,10 @@ class Meeting
             'moderatorOnlyMessage' => '',
             'autoStartRecording' => false,
             'allowStartStopRecording' => true,
+            'webcamsOnlyForModerator' => false,
+            'logo' => '',
+            'copyright' => '',
+            'muteOnStart' => false,
         ];
 
         $this->attendees = [];
