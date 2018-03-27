@@ -137,4 +137,4 @@ Copy this to a file called 'index.php', adjust the '$url' and '$secret' variable
     ./vendor/bin/phpunit
 
 ## License
-GNU GENERAL PUBLIC LICENSE (GPL)
+GNU GENERAL PUBLIC LICENSE Version 3 and later
