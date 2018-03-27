@@ -125,6 +125,10 @@ Copy this to a file called 'index.php', adjust the '$url' and '$secret' variable
     $url = $meeting->join($full_name);
     print "Hi $full_name, you are an attendee. Please join the call via $url<br />\n\n";
 
+## Bigbluebutton Secret and URI discovery
+
+    bbb-conf --secret
+
 ## Tests
 
     export BBB_URI=http://example.org/bigbluebutton/
