@@ -1,5 +1,6 @@
 {
     "name": "sanduhrs/php-bigbluebutton",
+    "description": "",
     "type": "library",
     "license": "GPL-3.0-or-later",
     "authors": [
@@ -9,6 +10,8 @@
         }
     ],
     "require": {
+        "ext-SimpleXML": "*",
+        "ext-json": "*",
         "php" : "^5.6 || ^7.0",
         "guzzlehttp/guzzle": "^6.2",
         "ramsey/uuid": "^3.4"
