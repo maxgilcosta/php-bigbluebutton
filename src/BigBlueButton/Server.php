@@ -399,6 +399,53 @@ class Server
     }
 
     /**
+     * Update recording.
+     *
+     * Update a recording for a given recordID.
+     *
+     * @param string $recordID
+     *   A record ID to apply the update action to.
+     *
+     * @return boolean
+     *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
+     */
+    public function updateRecording($recordID) {
+        return $this->updateRecordings([$recordID]);
+    }
+
+    /**
+     * Update recordings.
+     *
+     * Update recordings for a set of record IDs.
+     *
+     * @param array $recordIDs
+     *   A set of record IDs to apply the update action to.
+     *
+     * @return boolean
+     *   The success status as TRUE.
+     *
+     * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
+     */
+    public function updateRecordings($recordIDs, $meta = []) {
+        $options = [
+            'recordID' => implode(',', $recordIDs),
+        ];
+
+        if (count($recordIDs)) {
+            $options['recordID'] = implode(',', $recordIDs);
+        }
+
+        if (count($meta)) {
+            $options['meta'] = implode(',', $meta);
+        }
+
+        $this->client->get('updateRecordings', $options);
+        return true;
+    }
+
+    /**
      * Delete recording.
      *
      * Delete a recording for a given recordID.
