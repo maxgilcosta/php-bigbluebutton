@@ -139,6 +139,7 @@ class Server
      *     recording. This means the meeting can start recording automatically
      *     (autoStartRecording=true) with the user able to stop/start recording
      *     from the client.
+     *   - webcamsOnlyForModerator
      *
      * @return \sanduhrs\BigBlueButton\Member\Meeting
      *   A meeting object.
