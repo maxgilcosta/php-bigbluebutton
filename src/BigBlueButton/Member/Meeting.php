@@ -1163,7 +1163,7 @@ class Meeting
     {
         $options = [
             'meetingID' => $this->meetingID,
-            'password' => $this->moderatorPW,
+            'password' => $this->attendeePW,
         ];
         $response = $this->client->get('getMeetingInfo', $options);
         foreach ($response as $key => $value) {
@@ -1203,7 +1203,7 @@ class Meeting
      */
     public function getRecording($recordingID)
     {
-        $recordings = $this->getRecordings();
+        $recordings = $this->getRecordings([$recordingID]);
         if (isset($recordings[$recordingID])) {
             return $recordings[$recordingID];
         }
@@ -1215,16 +1215,46 @@ class Meeting
      *
      * Retrieves the recordings that are available for playback.
      *
+     * @param string[] $recordIds
+     *   A record ID for get the recordings. It can be a set of recordIDs separate by commas. If the record ID is not
+     *   specified, it will use meeting ID as the main criteria. If neither the meeting ID is specified, it will get ALL
+     *   the recordings. The recordID can also be used as a wildcard by including only the first characters in the
+     *   string.
+     *
+     * @param string[] $states
+     *   Since version 1.0 the recording has an attribute that shows a state that Indicates if the recording is
+     *   [processing|processed|published|unpublished|deleted]. The parameter state can be used to filter results. It can
+     *   be a set of states separate by commas. If it is not specified only the states [published|unpublished] are
+     *   considered (same as in previous versions). If it is specified as “any”, recordings in all states are included.
+     *
+     * @param string[] $meta
+     *   You can pass one or more metadata values to filter the recordings returned. The format of these parameters is
+     *   the same as the metadata passed to the create call. For more information see the docs for the create call.
+     *   http://docs.bigbluebutton.org/dev/api.html#create
+     *
      * @return array
      *   An array of \sanduhrs\BigBlueButton\Recording.
      *
      * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
-    public function getRecordings()
+    public function getRecordings($recordIds = [], $states = ['published', 'unpublished'], $meta = [])
     {
         $options = [
             'meetingID' => $this->meetingID,
         ];
+
+        if (count($recordIds)) {
+            $options['recordID'] = implode(',', $recordIds);
+        }
+
+        if (count($states)) {
+            $options['state'] = implode(',', $states);
+        }
+
+        if (count($meta)) {
+            $options['meta'] = implode(',', $recordIds);
+        }
+
         $response = $this->client->get('getRecordings', $options);
 
         $recordings = [];
