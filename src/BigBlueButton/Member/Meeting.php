@@ -81,6 +81,28 @@ class Meeting
      * @var string
      */
     protected $logoutURL;
+    
+    /**
+     * The Banner Text.
+     *
+     * @var string
+     */
+    protected $bannerText;
+
+    /**
+     * The Banner Color.
+     *
+     * @var string
+     */
+    
+    protected $bannerColor;
+
+    /**
+     * The logo.
+     *
+     * @var string
+     */
+    protected $logo;
 
     /**
      * The meeting will record.
@@ -129,13 +151,7 @@ class Meeting
      *
      * @var string
      */
-    protected $logo;
 
-    /**
-     * Copyright statement for flash client.
-     *
-     * @var string
-     */
     protected $copyright;
 
     /**
@@ -362,6 +378,8 @@ class Meeting
             'voiceBridge' => '',
             'webVoice' => '',
             'logoutURL' => '',
+            'bannerText' => '',
+            'bannerColor' => '',
             'record' => false,
             'duration' => 0,
             'meta' => [],
@@ -370,6 +388,8 @@ class Meeting
             'allowStartStopRecording' => true,
             'webcamsOnlyForModerator' => false,
             'logo' => '',
+            'bannerText' => '',
+            'bannerColor' => '',
             'copyright' => '',
             'muteOnStart' => false,
         ];
@@ -642,6 +662,93 @@ class Meeting
         $this->logoutURL = $logoutURL;
         return $this;
     }
+    /**
+     * Get the banner text.
+     *
+     * @return string
+     */
+    public function getBannerText()
+    {
+        return $this->bannerText;
+    }
+
+    /**
+     * Set the banner text.
+     *
+     * @param string $bannerText
+     * @return Meeting
+     */
+    public function setBannerText($bannerText)
+    {
+        $this->bannerText = $bannerText;
+        return $this;
+    }
+    
+    /**
+     * Get the banner Color.
+     *
+     * @return string
+     */
+    public function getBannerColor()
+    {
+        return $this->bannerColor;
+    }
+
+    /**
+     * Set the banner Color.
+     *
+     * @param string $bannerColor
+     * @return Meeting
+     */
+    public function setBannerColor($bannerColor)
+    {
+        $this->bannerColor = $bannerColor;
+        return $this;
+    }
+    
+   /**
+     * Get the copyright.
+     *
+     * @return string
+     */
+    public function getCopyright()
+    {
+        return $this->copyright;
+    }
+
+    /**
+     * Set the copyright.
+     *
+     * @param string $copyright
+     * @return Meeting
+     */
+    public function setCopyright($copyright)
+    {
+        $this->copyright = $copyright;
+        return $this;
+    }
+
+    /**
+     * Get the logo.
+     *
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * Set the logo.
+     *
+     * @param string $logo
+     * @return Meeting
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+        return $this;
+    }
 
     /**
      * Does the meeting record?
@@ -672,6 +779,39 @@ class Meeting
     public function setRecord($record)
     {
         $this->record = $record;
+        return $this;
+    }
+    
+    /**
+     * Does mute on start?
+     *
+     * @return boolean
+     */
+
+    public function getMuteOnStart()
+    {
+        return $this->doesMuteOnStart();
+    }
+
+    /**
+     * Alias for getMuteOnStart().
+     *
+     * @return boolean
+     */
+    public function doesMuteOnStart()
+    {
+        return $this->muteOnStart;
+    }
+
+    /**
+     * Set the muteOnStart.
+     *
+     * @param boolean $muteOnStart
+     * @return Meeting
+     */
+    public function setMuteOnStart($muteOnStart)
+    {
+        $this->muteOnStart = $muteOnStart;
         return $this;
     }
 
@@ -813,6 +953,38 @@ class Meeting
     public function setAllowStartStopRecording($allowStartStopRecording)
     {
         $this->allowStartStopRecording = $allowStartStopRecording;
+        return $this;
+    }
+
+    /**
+     * Alias for getWebcamsOnlyForModerator().
+     *
+     * @return boolean
+     */
+    public function doesWebcamsOnlyForModerator()
+    {
+        return $this->getWebcamsOnlyForModerator();
+    }
+
+    /**
+     * Does the meeting allow to start/stop recording?
+     *
+     * @return boolean
+     */
+    public function getWebcamsOnlyForModerator()
+    {
+        return $this->webcamsOnlyForModerator;
+    }
+
+    /**
+     * Set the allow start/stop recording indicator.
+     *
+     * @param boolean $webcamsOnlyForModerator
+     * @return Meeting
+     */
+    public function setWebcamsOnlyForModerator($webcamsOnlyForModerator)
+    {
+        $this->webcamsOnlyForModerator = $webcamsOnlyForModerator;
         return $this;
     }
 
@@ -1026,11 +1198,17 @@ class Meeting
           'welcome' => $this->getWelcome(),
           'dialNumber' => $this->getDialNumber(),
           'logoutURL' => $this->getLogoutURL(),
+          'bannerText' => $this->getBannerText(),
+          'bannerColor' => $this->getBannerColor(),
+          'copyright' => $this->getCopyright(),
+          'logo' => $this->getLogo(),
           'record' => $this->getRecord(),
+          'muteOnStart' => $this->getMuteOnStart(),
           'duration' => $this->getDuration(),
           'moderatorOnlyMessage' => $this->getModeratorOnlyMessage(),
           'autoStartRecording' => $this->getAutoStartRecording(),
           'allowStartStopRecording' => $this->getAllowStartStopRecording(),
+          'webcamsOnlyForModerator' => $this->getWebcamsOnlyForModerator(),
         ]);
         $this->meetingID = $response->meetingID;
         return $this->getInfo();

@@ -161,7 +161,7 @@ class Client
         // Fix data model.
         if (isset($array->attendees)) {
             $array->attendees = (array) $array->attendees;
-            if ($array->attendees[0] === "\n") {
+            if (!isset($array->attendees[0]) or $array->attendees[0] === "\n") {
                 $array->attendees = [];
             }
         }
@@ -169,7 +169,7 @@ class Client
         // Fix data model.
         if (isset($array->metadata)) {
             $array->metadata = (array) $array->metadata;
-            if ($array->metadata[0] === "\n") {
+            if (!isset($array->metadata[0]) or $array->metadata[0] === "\n") {
                 $array->metadata = [];
             }
         }
