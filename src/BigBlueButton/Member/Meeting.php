@@ -153,7 +153,7 @@ class Meeting
     protected $lockSettingsDisablePublicChat;
     protected $lockSettingsDisableNote;
     protected $lockSettingsLockedLayout;
-    protected $lockSettingsLockOnJoin
+    protected $lockSettingsLockOnJoin;
     protected $lockSettingsLockOnJoinConfigurable;
 
     protected $copyright;
