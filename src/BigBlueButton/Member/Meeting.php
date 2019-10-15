@@ -146,11 +146,15 @@ class Meeting
      */
     protected $webcamsOnlyForModerator;
 
-    /**
-     * URL to logo for the flash client.
-     *
-     * @var string
-     */
+    protected $allowModsToUnmuteUsers;
+    protected $lockSettingsDisableCam;
+    protected $lockSettingsDisableMic;
+    protected $lockSettingsDisablePrivateChat;
+    protected $lockSettingsDisablePublicChat;
+    protected $lockSettingsDisableNote;
+    protected $lockSettingsLockedLayout;
+    protected $lockSettingsLockOnJoin
+    protected $lockSettingsLockOnJoinConfigurable;
 
     protected $copyright;
 
@@ -387,6 +391,15 @@ class Meeting
             'autoStartRecording' => false,
             'allowStartStopRecording' => true,
             'webcamsOnlyForModerator' => false,
+            'allowModsToUnmuteUsers' => false,
+            'lockSettingsDisableCam' => false,
+            'lockSettingsDisableMic' => false,
+            'lockSettingsDisablePrivateChat' => false,
+            'lockSettingsDisablePublicChat' => false,
+            'lockSettingsDisableNote' => false,
+            'lockSettingsLockedLayout' => false,
+            'lockSettingsLockOnJoin' => true,
+            'lockSettingsLockOnJoinConfigurable' => false,
             'logo' => '',
             'bannerText' => '',
             'bannerColor' => '',
@@ -965,28 +978,125 @@ class Meeting
     {
         return $this->getWebcamsOnlyForModerator();
     }
-
-    /**
-     * Does the meeting allow to start/stop recording?
-     *
-     * @return boolean
-     */
+    
+    
     public function getWebcamsOnlyForModerator()
     {
         return $this->webcamsOnlyForModerator;
     }
 
-    /**
-     * Set the allow start/stop recording indicator.
-     *
-     * @param boolean $webcamsOnlyForModerator
-     * @return Meeting
-     */
     public function setWebcamsOnlyForModerator($webcamsOnlyForModerator)
     {
         $this->webcamsOnlyForModerator = $webcamsOnlyForModerator;
         return $this;
+    }    
+    
+    
+    
+    
+    public function getAllowModsToUnmuteUsers()
+    {
+        return $this->allowModsToUnmuteUsers;
     }
+
+    public function setAllowModsToUnmuteUsers($allowModsToUnmuteUsers)
+    {
+        $this->allowModsToUnmuteUsers = $allowModsToUnmuteUsers;
+        return $this;
+    }    
+    
+    
+    
+    public function getLockSettingsDisableCam()
+    {
+        return $this->lockSettingsDisableCam;
+    }
+
+    public function seLockSettingsDisableCam($lockSettingsDisableCam)
+    {
+        $this->lockSettingsDisableCam = $lockSettingsDisableCam;
+        return $this;
+    }    
+    
+    public function getLockSettingsDisableMic()
+    {
+        return $this->lockSettingsDisableMic;
+    }
+
+    public function setLockSettingsDisableMic($lockSettingsDisableMic)
+    {
+        $this->lockSettingsDisableMic = $lockSettingsDisableMic;
+        return $this;
+    }    
+    
+    public function getLockSettingsDisablePrivateChat()
+    {
+        return $this->lockSettingsDisablePrivateChat;
+    }
+
+    public function setLockSettingsDisablePrivateChat($lockSettingsDisablePrivateChat)
+    {
+        $this->lockSettingsDisablePrivateChat = $lockSettingsDisablePrivateChat;
+        return $this;
+    }    
+    
+    public function getLockSettingsDisablePublicChat()
+    {
+        return $this->lockSettingsDisablePublicChat;
+    }
+
+    public function setLockSettingsDisablePublicChat($lockSettingsDisablePublicChat)
+    {
+        $this->lockSettingsDisablePublicChat = $lockSettingsDisablePublicChat;
+        return $this;
+    }    
+    
+    public function getLockSettingsDisableNote()
+    {
+        return $this->lockSettingsDisableNote;
+    }
+
+    public function setLockSettingsDisableNote($lockSettingsDisableNote)
+    {
+        $this->lockSettingsDisableNote = $lockSettingsDisableNote;
+        return $this;
+    }    
+    
+    public function getLockSettingsLockedLayout()
+    {
+        return $this->lockSettingsLockedLayout;
+    }
+
+    public function setLockSettingsLockedLayout($lockSettingsLockedLayout)
+    {
+        $this->lockSettingsLockedLayout = $lockSettingsLockedLayout;
+        return $this;
+    }    
+    
+    public function getLockSettingsLockOnJoin()
+    {
+        return $this->lockSettingsLockOnJoin;
+    }
+
+    public function setLockSettingsLockOnJoin($lockSettingsLockOnJoin)
+    {
+        $this->lockSettingsLockOnJoin = $lockSettingsLockOnJoin;
+        return $this;
+    }    
+    
+    public function getLockSettingsLockOnJoinConfigurable()
+    {
+        return $this->lockSettingsLockOnJoinConfigurable;
+    }
+
+    public function setLockSettingsLockOnJoinConfigurable($lockSettingsLockOnJoinConfigurable)
+    {
+        $this->lockSettingsLockOnJoinConfigurable = $lockSettingsLockOnJoinConfigurable;
+        return $this;
+    }
+    
+    
+    
 
     /**
      * Get the create time.
@@ -1209,6 +1319,15 @@ class Meeting
           'autoStartRecording' => $this->getAutoStartRecording(),
           'allowStartStopRecording' => $this->getAllowStartStopRecording(),
           'webcamsOnlyForModerator' => $this->getWebcamsOnlyForModerator(),
+          'allowModsToUnmuteUsers' => $this->getAllowModsToUnmuteUsers(),
+          'lockSettingsDisableCam' => $this->getLockSettingsDisableCam(),
+          'lockSettingsDisableMic' => $this->getLockSettingsDisableMic(),
+          'lockSettingsDisablePrivateChat' => $this->getLockSettingsDisablePrivateChat(),
+          'lockSettingsDisablePublicChat' => $this->getLockSettingsDisablePublicChat(),
+          'lockSettingsDisableNote' => $this->getLockSettingsDisableNote(),
+          'lockSettingsLockedLayout' => $this->getLockSettingsLockedLayout(),
+          'lockSettingsLockOnJoin' => $this->getLockSettingsLockOnJoin(),
+          'lockSettingsLockOnJoinConfigurable' => $this->getLockSettingsLockOnJoinConfigurable(),
         ]);
         $this->meetingID = $response->meetingID;
         return $this->getInfo();
