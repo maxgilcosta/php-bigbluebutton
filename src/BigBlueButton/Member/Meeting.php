@@ -1300,7 +1300,7 @@ class Meeting
      */
     public function create()
     {
-        $response = $this->client->get('create', [
+        $parameters = [
           'name' => $this->getName(),
           'meetingID' => $this->getMeetingID(),
           'attendeePW' => $this->getAttendeePW(),
@@ -1328,7 +1328,13 @@ class Meeting
           'lockSettingsLockedLayout' => $this->getLockSettingsLockedLayout(),
           'lockSettingsLockOnJoin' => $this->getLockSettingsLockOnJoin(),
           'lockSettingsLockOnJoinConfigurable' => $this->getLockSettingsLockOnJoinConfigurable(),
-        ]);
+        ];
+        
+        foreach($this->getMetadata() as $key=>$value){
+            $parameters["meta_$key"] = $value;
+        }
+        
+        $response = $this->client->get('create', $parameters);
         $this->meetingID = $response->meetingID;
         return $this->getInfo();
     }

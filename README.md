@@ -61,6 +61,11 @@ Add a meeting:
         'logoutURL' => 'https://example.org/',
         'record' => true,
         'autoStartRecording' => true,
+        'meta'  => [
+            'bn-recording-ready-url' => urlencode(https://example.com/api/v1/recording_status),
+            'presenter' => 'John Smith',
+        ],
+        //any other parameters from [BBB API Documentation](https://docs.bigbluebutton.org/dev/api.html#create)
     ]);
 
 Get meeting join URL for a moderator:
@@ -112,6 +117,11 @@ Copy this to a file called 'index.php', adjust the '$url' and '$secret' variable
         'logoutURL' => 'https://example.org/',
         'record' => true,
         'autoStartRecording' => true,
+        'meta'  => [
+            'bn-recording-ready-url' => urlencode(https://example.com/api/v1/recording_status),
+            'presenter' => 'John Smith',
+        ],
+        //any other parameters from [BBB API Documentation](https://docs.bigbluebutton.org/dev/api.html#create)
     ]);
     print '<pre>' . print_r($meeting, true) . "</pre>\n\n";
     
