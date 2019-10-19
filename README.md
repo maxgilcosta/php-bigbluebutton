@@ -62,7 +62,7 @@ Add a meeting:
         'record' => true,
         'autoStartRecording' => true,
         'meta'  => [
-            'bn-recording-ready-url' => urlencode('https://example.com/api/v1/recording_status'),
+            'bbb-recording-ready-url' => urlencode('https://example.com/api/v1/recording_status'),
             'presenter' => 'John Smith',
         ],
         //any other parameters from [BBB API Documentation](https://docs.bigbluebutton.org/dev/api.html#create)
