@@ -12,6 +12,11 @@ use GuzzleHttp\Psr7\Uri;
  */
 class Document
 {
+
+    const XML_VERSION = '1.0';
+
+    const XML_ENCODING = 'UTF-8';
+
     /**
      * The URI.
      *
@@ -34,6 +39,13 @@ class Document
     protected $embed;
 
     /**
+     * The base64 representation.
+     *
+     * @var string
+     */
+    protected $base64;
+
+    /**
      * The BigBlueButton client.
      *
      * @var \sanduhrs\BigBlueButton\Client
@@ -43,15 +55,17 @@ class Document
     /**
      * Document constructor.
      *
-     * @param $uri
+     * @param $url
      * @param string $name
      * @param bool $embed
+     * @param string $base64
      */
-    public function __construct($uri, $name = '', $embed = false)
+    public function __construct($url = '', $name = '', $embed = false, $base64 = '')
     {
-        $this->uri = new Uri($uri);
-        $this->name = $name;
-        $this->embed = $embed;
+        $this->setUri(new Uri($url));
+        $this->setName($name);
+        $this->setEmbed($embed);
+        $this->setBase64($base64);
     }
 
     /**
@@ -118,6 +132,52 @@ class Document
     {
         $this->embed = $embed;
         return $this;
+    }
+
+    /**
+     * Get the base64 representation.
+     *
+     * @return string
+     */
+    public function getBase64()
+    {
+        return $this->base64;
+    }
+
+    /**
+     * Set the base64 representation.
+     *
+     * @param string $base64
+     * @return Document
+     */
+    public function setBase64($base64)
+    {
+        $this->base64 = $base64;
+        return $this;
+    }
+
+    /**
+     * Get XML representation of the document for upload.
+     *
+     * @return \DOMElement
+     */
+    public function getXmlString()
+    {
+        $xml = new \DOMDocument(self::XML_VERSION, self::XML_ENCODING);
+        if ($this->isEmbedded()) {
+            if ($this->getBase64() === '') {
+                $this->setBase64(base64_encode(file_get_contents($this->getUri())));
+            }
+            $document = $xml->createElement("document", $this->getBase64());
+            $document->setAttribute('name', $this->getName());
+            $xml->appendChild($document);
+        } else {
+            $document = $xml->createElement("document", $this->getBase64());
+            $document->setAttribute('url', $this->getUri());
+            $document->setAttribute('filename', $this->getName());
+            $xml->appendChild($document);
+        }
+        return $xml->saveXML($xml->documentElement);
     }
 
     /**
