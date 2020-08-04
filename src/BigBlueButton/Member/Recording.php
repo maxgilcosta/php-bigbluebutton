@@ -310,4 +310,28 @@ class Recording
         ];
         return $this->client->get('deleteRecordings', $options);
     }
+
+    /**
+     * Get recording text tracks.
+     */
+    public function getRecordingTextTracks()
+    {
+        $options = [
+            'recordID' => $this->getRecordID(),
+        ];
+        $this->client->get('getRecordingTextTracks', $options);
+    }
+
+    /**
+     * Put recording text tracks.
+     */
+    public function putRecordingTextTracks($kind = 'subtitles', $lang = 'en', $label = '')
+    {
+        $options = [
+            'recordID' => $this->getRecordID(),
+            'kind' => $kind,
+            'lang' => $lang,
+        ];
+        $this->client->get('getRecordingTextTracks', $options);
+    }
 }

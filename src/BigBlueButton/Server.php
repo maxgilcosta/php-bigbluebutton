@@ -412,7 +412,8 @@ class Server
      *
      * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
-    public function updateRecording($recordID) {
+    public function updateRecording($recordID)
+    {
         return $this->updateRecordings([$recordID]);
     }
 
@@ -429,7 +430,8 @@ class Server
      *
      * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
      */
-    public function updateRecordings($recordIDs, $meta = []) {
+    public function updateRecordings($recordIDs, $meta = [])
+    {
         $options = [
             'recordID' => implode(',', $recordIDs),
         ];

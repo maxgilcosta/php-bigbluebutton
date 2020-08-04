@@ -11,6 +11,13 @@ use sanduhrs\BigBlueButton\Client;
  */
 class Meeting
 {
+
+    const GUEST_POLICY_ALWAYS_ACCEPT = 'ALWAYS_ACCEPT';
+
+    const GUEST_POLICY_ALWAYS_DENY = 'ALWAYS_DENY';
+
+    const GUEST_POLICY_ASK_MODERATOR = 'ASK_MODERATOR';
+
     /**
      * The meeting name.
      *
@@ -76,33 +83,18 @@ class Meeting
     protected $webVoice;
 
     /**
+     * The max number of participants.
+     *
+     * @var integer
+     */
+    protected $maxParticipants;
+
+    /**
      * The logout URL.
      *
      * @var string
      */
     protected $logoutURL;
-    
-    /**
-     * The Banner Text.
-     *
-     * @var string
-     */
-    protected $bannerText;
-
-    /**
-     * The Banner Color.
-     *
-     * @var string
-     */
-    
-    protected $bannerColor;
-
-    /**
-     * The logo.
-     *
-     * @var string
-     */
-    protected $logo;
 
     /**
      * The meeting will record.
@@ -117,6 +109,34 @@ class Meeting
      * @var int
      */
     protected $duration;
+
+    /**
+     * Is a breakout room.
+     *
+     * @var boolean
+     */
+    protected $isBreakout;
+
+    /**
+     * The meeting id of a breakout parent.
+     *
+     * @var string
+     */
+    protected $parentMeetingID;
+
+    /**
+     * The sequence number.
+     *
+     * @var integer
+     */
+    protected $sequence;
+
+    /**
+     * User can choose breakout room.
+     *
+     * @var boolean
+     */
+    protected $freeJoin;
 
     /**
      * Message for moderator only.
@@ -146,16 +166,32 @@ class Meeting
      */
     protected $webcamsOnlyForModerator;
 
-    protected $allowModsToUnmuteUsers;
-    protected $lockSettingsDisableCam;
-    protected $lockSettingsDisableMic;
-    protected $lockSettingsDisablePrivateChat;
-    protected $lockSettingsDisablePublicChat;
-    protected $lockSettingsDisableNote;
-    protected $lockSettingsLockedLayout;
-    protected $lockSettingsLockOnJoin;
-    protected $lockSettingsLockOnJoinConfigurable;
+    /**
+     * The logo.
+     *
+     * @var string
+     */
+    protected $logo;
 
+    /**
+     * The Banner Text.
+     *
+     * @var string
+     */
+    protected $bannerText;
+
+    /**
+     * The Banner Color.
+     *
+     * @var string
+     */
+    protected $bannerColor;
+
+    /**
+     * The copyright notice.
+     *
+     * @var string
+     */
     protected $copyright;
 
     /**
@@ -164,6 +200,76 @@ class Meeting
      * @var bool
      */
     protected $muteOnStart;
+
+    /**
+     * Allow moderators to unmute users.
+     *
+     * @var boolean
+     */
+    protected $allowModsToUnmuteUsers;
+
+    /**
+     * Disable camera sharing.
+     *
+     * @var boolean
+     */
+    protected $lockSettingsDisableCam;
+
+    /**
+     * Disable microphone sharing.
+     *
+     * @var boolean
+     */
+    protected $lockSettingsDisableMic;
+
+    /**
+     * Disable private chat.
+     *
+     * @var boolean
+     */
+    protected $lockSettingsDisablePrivateChat;
+
+    /**
+     * Disabe public chat.
+     *
+     * @var boolean
+     */
+    protected $lockSettingsDisablePublicChat;
+
+    /**
+     * Disable notes.
+     *
+     * @var boolean
+     */
+    protected $lockSettingsDisableNote;
+
+    /**
+     * Lock the meeting layout.
+     *
+     * @var boolean
+     */
+    protected $lockSettingsLockedLayout;
+
+    /**
+     * Do not apply lock setting on join.
+     *
+     * @var boolean
+     */
+    protected $lockSettingsLockOnJoin;
+
+    /**
+     * Allow applying of lock settings.
+     *
+     * @var boolean
+     */
+    protected $lockSettingsLockOnJoinConfigurable;
+
+    /**
+     * The guest policy.
+     *
+     * @var string
+     */
+    protected $guestPolicy;
 
     // Read-only properties
 
@@ -305,6 +411,14 @@ class Meeting
      * @param array $attributes
      *   - id (string): The unique id for the meeting.
      *   - name (string): A name for the meeting.
+     *   - attendeePW (string): The password that the join URL can later
+     *     provide as its password parameter to indicate the user will join as
+     *     a viewer. If no attendeePW is provided, the create call will return
+     *     a randomally generated attendeePW password for the meeting.
+     *   - moderatorPW (string): The password that will join URL can later
+     *     provide as its password parameter to indicate the user will as a
+     *     moderator. if no moderatorPW is provided, create will return a
+     *     randomly generated moderatorPW password for the meeting.
      *   - welcome (string): A welcome message that gets displayed on the chat
      *     window when the participant joins. You can include keywords
      *     (%%CONFNAME%%, %%DIALNUM%%, %%CONFNUM%%) which will be substituted
@@ -324,6 +438,8 @@ class Meeting
      *     join a voice conference for the session.
      *   - webVoice (string): Voice conference alphanumeric that participants
      *     enter to join the voice conference.
+     *   - maxParticipants (number): Set the maximum number of users allowed to
+     *     joined the conference at the same time.
      *   - logoutURL (string): The URL that the BigBlueButton client will go to
      *     after users click the OK button on the ‘You have been logged out
      *     message’. This overrides, the value for
@@ -341,6 +457,12 @@ class Meeting
      *     duration contains a non-zero value, then when the length of the
      *     meeting exceeds the duration value the server will immediately end
      *     the meeting (same as receiving an end API request).
+     *   - isBreakout (boolean): Must be set to true to create a breakout room.
+     *   - parentMeetingID (string): Must be provided when creating a breakout
+     *     room, the parent room must be running.
+     *   - sequence (number): The sequence number of the breakout room.
+     *   - freeJoin (boolean): If set to true, the client will give the user
+     *     the choice to choose the breakout rooms he wants to join.
      *   - meta (string): You can pass one or more metadata values for create a
      *     meeting. These will be stored by BigBlueButton and later retrievable
      *     via the getMeetingInfo call and getRecordings. Examples of meta
@@ -362,11 +484,41 @@ class Meeting
      *   - logo (string): Setting
      *     'logo=http://www.example.com/my-custom-logo.png' will replace the
      *     default logo in the Flash client. (added 2.0)
+     *   - bannerText (string): Will set the banner text in the client.
+     *     (added 2.0)
+     *   - bannerColor (string): Will set the banner background color in the
+     *     client. The required format is color hex #FFFFFF. (added 2.0)
      *   - copyright (string): Setting 'copyright=My custom copyright' will
      *     replace the default copyright on the footer of the Flash client.
      *     (added 2.0)
      *   - muteOnStart (boolean): Setting 'muteOnStart=true' will mute all users
      *     when the meeting starts. (added 2.0)
+     *   - allowModsToUnmuteUsers (boolean): Default false. Setting to true
+     *     will allow moderators to unmute other users in the meeting.
+     *     (added 2.2)
+     *   - lockSettingsDisableCam (boolean): Default false. Setting to true
+     *     will prevent users from sharing their camera in the meeting.
+     *     (added 2.2)
+     *   - lockSettingsDisableMic (boolean): Default false. Setting to true
+     *     will only allow user to join listen only. (added 2.2)
+     *   - lockSettingsDisablePrivateChat (boolean): Default false. Setting to
+     *     true will disable private chats in the meeting. (added 2.2)
+     *   - lockSettingsDisablePublicChat (boolean): Default false. Setting to
+     *     true will disable public chat in the meeting. (added 2.2)
+     *   - lockSettingsDisableNote (boolean): Default false. Setting to true
+     *     will disable notes in the meeting. (added 2.2)
+     *   - lockSettingsLockedLayout (boolean): Default false. Setting to true
+     *     will lock the layout in the meeting. (added 2.2)
+     *   - lockSettingsLockOnJoin (boolean): Default true. Setting to false
+     *     will not apply lock setting to users when they join. (added 2.2)
+     *   - lockSettingsLockOnJoinConfigurable (boolean): Default false. Setting
+     *     to true will allow applying of lockSettingsLockOnJoin param.
+     *     (added 2.2)
+     *   - guestPolicy (string): Default ALWAYS_ACCEPT. Will set the guest
+     *     policy for the meeting. The guest policy determines whether or not
+     *     users who send a join request with guest=true will be allowed to
+     *     join the meeting. Possible values are ALWAYS_ACCEPT, ALWAYS_DENY,
+     *     and ASK_MODERATOR.
      *
      * @param \sanduhrs\BigBlueButton\Client $client
      */
@@ -381,16 +533,24 @@ class Meeting
             'dialNumber' => '',
             'voiceBridge' => '',
             'webVoice' => '',
+            'maxParticipants' => 0,
             'logoutURL' => '',
-            'bannerText' => '',
-            'bannerColor' => '',
             'record' => false,
             'duration' => 0,
+            'isBreakout' => false,
+            'parentMeetingID' => false,
+            'sequence' => 0,
+            'freeJoin' => false,
             'meta' => [],
             'moderatorOnlyMessage' => '',
             'autoStartRecording' => false,
             'allowStartStopRecording' => true,
             'webcamsOnlyForModerator' => false,
+            'logo' => '',
+            'bannerText' => '',
+            'bannerColor' => '',
+            'copyright' => '',
+            'muteOnStart' => false,
             'allowModsToUnmuteUsers' => false,
             'lockSettingsDisableCam' => false,
             'lockSettingsDisableMic' => false,
@@ -400,17 +560,14 @@ class Meeting
             'lockSettingsLockedLayout' => false,
             'lockSettingsLockOnJoin' => true,
             'lockSettingsLockOnJoinConfigurable' => false,
-            'logo' => '',
-            'bannerText' => '',
-            'bannerColor' => '',
-            'copyright' => '',
-            'muteOnStart' => false,
+            'guestPolicy' => '',
+            'slides' => [],
         ];
 
         $this->attendees = [];
         $this->metadata = [];
         $this->recordings = [];
-        $this->slides = [];
+        $this->addSlides($attributes['slides']);
 
         // Take naming inconsistencies into account.
         if (!empty($attributes['name'])) {
@@ -696,7 +853,7 @@ class Meeting
         $this->bannerText = $bannerText;
         return $this;
     }
-    
+
     /**
      * Get the banner Color.
      *
@@ -718,7 +875,7 @@ class Meeting
         $this->bannerColor = $bannerColor;
         return $this;
     }
-    
+
    /**
      * Get the copyright.
      *
@@ -794,7 +951,7 @@ class Meeting
         $this->record = $record;
         return $this;
     }
-    
+
     /**
      * Does mute on start?
      *
@@ -978,125 +1135,226 @@ class Meeting
     {
         return $this->getWebcamsOnlyForModerator();
     }
-    
-    
+
+    /**
+     * Get webcams only for moderators.
+     *
+     * @return bool
+     */
     public function getWebcamsOnlyForModerator()
     {
         return $this->webcamsOnlyForModerator;
     }
 
+    /**
+     * Set webcams only for moderators.
+     *
+     * @param $webcamsOnlyForModerator
+     * @return $this
+     */
     public function setWebcamsOnlyForModerator($webcamsOnlyForModerator)
     {
         $this->webcamsOnlyForModerator = $webcamsOnlyForModerator;
         return $this;
-    }    
-    
-    
-    
-    
+    }
+
+    /**
+     * Get allow mods to unmute users.
+     *
+     * @return bool
+     */
     public function getAllowModsToUnmuteUsers()
     {
         return $this->allowModsToUnmuteUsers;
     }
 
+    /**
+     * Set allow mods to unmute users.
+     *
+     * @param $allowModsToUnmuteUsers
+     * @return $this
+     */
     public function setAllowModsToUnmuteUsers($allowModsToUnmuteUsers)
     {
         $this->allowModsToUnmuteUsers = $allowModsToUnmuteUsers;
         return $this;
-    }    
-    
-    
-    
+    }
+
+    /**
+     * Get lock settings disable cam.
+     *
+     * @return bool
+     */
     public function getLockSettingsDisableCam()
     {
         return $this->lockSettingsDisableCam;
     }
 
-    public function seLockSettingsDisableCam($lockSettingsDisableCam)
+    /**
+     * Set lock settings disable cam.
+     *
+     * @param $lockSettingsDisableCam
+     * @return $this
+     */
+    public function setLockSettingsDisableCam($lockSettingsDisableCam)
     {
         $this->lockSettingsDisableCam = $lockSettingsDisableCam;
         return $this;
-    }    
-    
+    }
+
+    /**
+     * Get lock settings disable mic.
+     *
+     * @return bool
+     */
     public function getLockSettingsDisableMic()
     {
         return $this->lockSettingsDisableMic;
     }
 
+    /**
+     * Set lock settings disable mic.
+     *
+     * @param $lockSettingsDisableMic
+     * @return $this
+     */
     public function setLockSettingsDisableMic($lockSettingsDisableMic)
     {
         $this->lockSettingsDisableMic = $lockSettingsDisableMic;
         return $this;
-    }    
-    
+    }
+
+    /**
+     * Get lockSettingsDisablePrivateChat
+     *
+     * @return bool
+     */
     public function getLockSettingsDisablePrivateChat()
     {
         return $this->lockSettingsDisablePrivateChat;
     }
 
+    /**
+     * Set lock settings disable private chat.
+     *
+     * @param $lockSettingsDisablePrivateChat
+     * @return $this
+     */
     public function setLockSettingsDisablePrivateChat($lockSettingsDisablePrivateChat)
     {
         $this->lockSettingsDisablePrivateChat = $lockSettingsDisablePrivateChat;
         return $this;
-    }    
-    
+    }
+
+    /**
+     * Get lock settings disable public chat.
+     *
+     * @return bool
+     */
     public function getLockSettingsDisablePublicChat()
     {
         return $this->lockSettingsDisablePublicChat;
     }
 
+    /**
+     * Set lock settings disable public chat.
+     *
+     * @param $lockSettingsDisablePublicChat
+     * @return $this
+     */
     public function setLockSettingsDisablePublicChat($lockSettingsDisablePublicChat)
     {
         $this->lockSettingsDisablePublicChat = $lockSettingsDisablePublicChat;
         return $this;
-    }    
-    
+    }
+
+    /**
+     * Get lock settings disable note.
+     *
+     * @return bool
+     */
     public function getLockSettingsDisableNote()
     {
         return $this->lockSettingsDisableNote;
     }
 
+    /**
+     * Set lock settings disable note.
+     *
+     * @param $lockSettingsDisableNote
+     * @return $this
+     */
     public function setLockSettingsDisableNote($lockSettingsDisableNote)
     {
         $this->lockSettingsDisableNote = $lockSettingsDisableNote;
         return $this;
-    }    
-    
+    }
+
+    /**
+     * Get lock settings locked layout.
+     *
+     * @return bool
+     */
     public function getLockSettingsLockedLayout()
     {
         return $this->lockSettingsLockedLayout;
     }
 
+    /**
+     * Set lock settings locked layout.
+     *
+     * @param $lockSettingsLockedLayout
+     * @return $this
+     */
     public function setLockSettingsLockedLayout($lockSettingsLockedLayout)
     {
         $this->lockSettingsLockedLayout = $lockSettingsLockedLayout;
         return $this;
-    }    
-    
+    }
+
+    /**
+     * Get lock settings lock on join.
+     *
+     * @return bool
+     */
     public function getLockSettingsLockOnJoin()
     {
         return $this->lockSettingsLockOnJoin;
     }
 
+    /**
+     * Set lock settings lock on join.
+     *
+     * @param $lockSettingsLockOnJoin
+     * @return $this
+     */
     public function setLockSettingsLockOnJoin($lockSettingsLockOnJoin)
     {
         $this->lockSettingsLockOnJoin = $lockSettingsLockOnJoin;
         return $this;
-    }    
-    
+    }
+
+    /**
+     * Get lock settings lock on join configurable.
+     *
+     * @return bool
+     */
     public function getLockSettingsLockOnJoinConfigurable()
     {
         return $this->lockSettingsLockOnJoinConfigurable;
     }
 
+    /**
+     * Set lock settings lock on join configurable.
+     *
+     * @param $lockSettingsLockOnJoinConfigurable
+     * @return $this
+     */
     public function setLockSettingsLockOnJoinConfigurable($lockSettingsLockOnJoinConfigurable)
     {
         $this->lockSettingsLockOnJoinConfigurable = $lockSettingsLockOnJoinConfigurable;
         return $this;
     }
-    
-    
-    
 
     /**
      * Get the create time.
@@ -1259,11 +1517,28 @@ class Meeting
     }
 
     /**
-     * Add a document with slides.
+     * Add on or multiple slide documents.
+     *
+     * @param \sanduhrs\BigBlueButton\Member\Document[] $documents
+     */
+    public function addSlides($documents)
+    {
+        if (!is_array($documents)) {
+            $documents = [
+                $documents,
+            ];
+        }
+        foreach ($documents as $document) {
+            $this->addSlide($document);
+        }
+    }
+
+    /**
+     * Add a slide document.
      *
      * @param \sanduhrs\BigBlueButton\Member\Document $document
      */
-    public function addSlides(Document $document)
+    public function addSlide(Document $document)
     {
         $this->slides[] = $document;
     }
@@ -1295,8 +1570,6 @@ class Meeting
      *   The meeting object.
      *
      * @throws \sanduhrs\BigBlueButton\Exception\BigBlueButtonException
-     *
-     * @todo http://docs.bigbluebutton.org/dev/api.html#preupload-slides
      */
     public function create()
     {
@@ -1328,13 +1601,16 @@ class Meeting
           'lockSettingsLockedLayout' => $this->getLockSettingsLockedLayout(),
           'lockSettingsLockOnJoin' => $this->getLockSettingsLockOnJoin(),
           'lockSettingsLockOnJoinConfigurable' => $this->getLockSettingsLockOnJoinConfigurable(),
+          'body' => '',
         ];
-        
-        foreach($this->getMetadata() as $key=>$value){
+
+        foreach ($this->getMetadata() as $key => $value) {
             $parameters["meta_$key"] = $value;
         }
-        
-        $response = $this->client->get('create', $parameters);
+
+
+
+        $response = $this->client->post('create', $parameters);
         $this->meetingID = $response->meetingID;
         return $this->getInfo();
     }
