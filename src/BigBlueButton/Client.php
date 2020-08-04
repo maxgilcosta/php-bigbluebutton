@@ -337,9 +337,12 @@ class Client
      * @return string
      *   The xml formatted server response string.
      */
-    public function postRaw($call, $options = [])
+    public function postRaw($call, $options = [], $content_type = 'application/xml')
     {
-        $uri = $this->generateURI($call, $options, false);
+        $uri = $this->generateURI($call, [], false);
+        $body = isset($options['body']) ? $options['body'] : '';
+        unset($options['body']);
+
         $options = $this->prepareQueryOptions($options);
         $options += [
             'checksum' => $this->checksum($call, $options),
@@ -348,9 +351,11 @@ class Client
             'POST',
             $uri,
             [
-              'form_params' => $options,
+              'query' => $options,
+              'body' => $body,
               'headers' => [
-                'Content-Type' => 'application/xml',
+                  'Content-Type' => $content_type,
+                  'Content-Length' => mb_strlen($body),
               ],
             ]
         );
@@ -370,9 +375,9 @@ class Client
      * @return string
      *   The json formatted server response string.
      */
-    public function post($call, $options = [])
+    public function post($call, $options = [], $body = '')
     {
-        $raw = $this->postRaw($call, $options);
+        $raw = $this->postRaw($call, $options, $body);
         $xml = simplexml_load_string($raw);
 
         list($element) = $xml->xpath('/*/returncode');
