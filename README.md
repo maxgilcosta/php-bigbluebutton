@@ -68,6 +68,18 @@ Add a meeting:
         //any other parameters from [BBB API Documentation](https://docs.bigbluebutton.org/dev/api.html#create)
     ]);
 
+Add a meeting with pre-uploaded slides:
+
+    $meeting = [
+        'id' => '123-456-789-001',
+        'name' => 'A BigBlueButton meeting with custom slides',
+    ];
+    $meeting['slides'][] = new Document(
+       'https://example.org/slide.png',
+       'slide.png',
+   );
+    $meeting = $bbb->server->addMeeting($meeting);
+
 Get meeting join URL for a moderator:
 
     $full_name = 'Martin Moderator';
