@@ -31,7 +31,7 @@ To get your API URL and secret login to your BigBlueButton server and run:
 
 ## Usage
 
-Initialize a BigBlueButton object:
+### Initialize a BigBlueButton object:
 
     <?php
 
@@ -46,11 +46,11 @@ Initialize a BigBlueButton object:
     // Initialize a BigBlueButton object.
     $bbb = new BigBlueButton($url, $secret, $endpoint);
 
-Get the version of the remote server:
+### Get the version of the remote server:
 
     $version = $bbb->server->getVersion();
 
-Add a meeting:
+### Add a meeting:
 
     $meeting = $bbb->server->addMeeting([
         'id' => '123-456-789-000',
@@ -68,7 +68,7 @@ Add a meeting:
         //any other parameters from [BBB API Documentation](https://docs.bigbluebutton.org/dev/api.html#create)
     ]);
 
-Add a meeting with pre-uploaded slides:
+### Add a meeting with pre-uploaded slides:
 
     $meeting = [
         'id' => '123-456-789-001',
@@ -80,12 +80,12 @@ Add a meeting with pre-uploaded slides:
     );
     $meeting = $bbb->server->addMeeting($meeting);
 
-Get meeting join URL for a moderator:
+### Get meeting join URL for a moderator:
 
     $full_name = 'Martin Moderator';
     $url = $meeting->join($full_name, true);
 
-Get meeting join URL for an attendee:
+### Get meeting join URL for an attendee:
 
     $full_name = 'Anton Attendee';
     $url = $meeting->join($full_name);
