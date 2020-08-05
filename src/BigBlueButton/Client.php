@@ -375,9 +375,9 @@ class Client
      * @return string
      *   The json formatted server response string.
      */
-    public function post($call, $options = [], $body = '')
+    public function post($call, $options = [])
     {
-        $raw = $this->postRaw($call, $options, $body);
+        $raw = $this->postRaw($call, $options);
         $xml = simplexml_load_string($raw);
 
         list($element) = $xml->xpath('/*/returncode');
