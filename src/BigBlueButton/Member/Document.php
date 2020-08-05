@@ -13,10 +13,6 @@ use GuzzleHttp\Psr7\Uri;
 class Document
 {
 
-    const XML_VERSION = '1.0';
-
-    const XML_ENCODING = 'UTF-8';
-
     /**
      * The URI.
      *
@@ -154,30 +150,6 @@ class Document
     {
         $this->base64 = $base64;
         return $this;
-    }
-
-    /**
-     * Get XML representation of the document for upload.
-     *
-     * @return \DOMElement
-     */
-    public function getXmlString()
-    {
-        $xml = new \DOMDocument(self::XML_VERSION, self::XML_ENCODING);
-        if ($this->isEmbedded()) {
-            if ($this->getBase64() === '') {
-                $this->setBase64(base64_encode(file_get_contents($this->getUri())));
-            }
-            $document = $xml->createElement("document", $this->getBase64());
-            $document->setAttribute('name', $this->getName());
-            $xml->appendChild($document);
-        } else {
-            $document = $xml->createElement("document", $this->getBase64());
-            $document->setAttribute('url', $this->getUri());
-            $document->setAttribute('filename', $this->getName());
-            $xml->appendChild($document);
-        }
-        return $xml->saveXML($xml->documentElement);
     }
 
     /**
