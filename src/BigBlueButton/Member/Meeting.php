@@ -1611,29 +1611,31 @@ class Meeting
             $parameters["meta_$key"] = $value;
         }
 
-        $xml = new \DOMDocument(self::XML_VERSION, self::XML_ENCODING);
-        $modules = $xml->createElement("modules");
-        $module = $xml->createElement("module");
-        $module->setAttribute('name', 'presentation');
-        $modules->appendChild($module);
-        foreach ($this->getSlides() as $slide) {
-            if ($slide->isEmbedded()) {
-                if ($slide->getBase64() === '') {
-                    $slide->setBase64(base64_encode(file_get_contents($slide->getUri())));
+        if ($this->getSlides()) {
+            $xml = new \DOMDocument(self::XML_VERSION, self::XML_ENCODING);
+            $modules = $xml->createElement("modules");
+            $module = $xml->createElement("module");
+            $module->setAttribute('name', 'presentation');
+            $modules->appendChild($module);
+            foreach ($this->getSlides() as $slide) {
+                if ($slide->isEmbedded()) {
+                    if ($slide->getBase64() === '') {
+                        $slide->setBase64(base64_encode(file_get_contents($slide->getUri())));
+                    }
+                    $document = $xml->createElement("document", $slide->getBase64());
+                    $document->setAttribute('name', $slide->getName());
+                    $module->appendChild($document);
+                } else {
+                    $document = $xml->createElement("document", $slide->getBase64());
+                    $document->setAttribute('url', $slide->getUri());
+                    $document->setAttribute('filename', $slide->getName());
+                    $module->appendChild($document);
                 }
-                $document = $xml->createElement("document", $slide->getBase64());
-                $document->setAttribute('name', $slide->getName());
-                $module->appendChild($document);
-            } else {
-                $document = $xml->createElement("document", $slide->getBase64());
-                $document->setAttribute('url', $slide->getUri());
-                $document->setAttribute('filename', $slide->getName());
-                $module->appendChild($document);
             }
+            $xml->appendChild($modules);
+            $body = $xml->saveXML($xml->documentElement);
+            $parameters['body'] = $body;
         }
-        $xml->appendChild($modules);
-        $body = $xml->saveXML($xml->documentElement);
-        $parameters['body'] = $body;
 
         $response = $this->client->post('create', $parameters);
         $this->meetingID = $response->meetingID;
