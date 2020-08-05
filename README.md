@@ -77,7 +77,7 @@ Add a meeting with pre-uploaded slides:
     $meeting['slides'][] = new Document(
        'https://example.org/slide.png',
        'slide.png',
-   );
+    );
     $meeting = $bbb->server->addMeeting($meeting);
 
 Get meeting join URL for a moderator:
