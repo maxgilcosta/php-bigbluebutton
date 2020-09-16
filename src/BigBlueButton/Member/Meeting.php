@@ -945,6 +945,16 @@ class Meeting
     }
 
     /**
+     * Is meeting recording?
+     *
+     * @return boolean
+     */
+    public function isRecording()
+    {
+        return $this->recording;
+    }
+
+    /**
      * Set the record.
      *
      * @param boolean $record
